@@ -1,17 +1,20 @@
-import os
 from datetime import datetime
 from airflow.models import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-
 from airflow.providers.google.cloud.operators.bigquery import (
     BigQueryGetDatasetOperator,
     BigQueryCreateEmptyDatasetOperator
 )
+from great_expectations_provider.operators.great_expectations import (
+    GreatExpectationsOperator,
+)
+from packages.stock_data_access.stock_data import _save_stocks_data_to_gbq
+import os
 
-DATASET_NAME = 'stocks_analytics'
-
-
+DATASET_NAME = 'stocks_storage'
+sa_path = os.environ.get('SERVICE_ACCOUNT_JSON_PATH')
+GE_ROOT_DIR = os.getcwd() + "/great_expectations"
 
 with DAG(
     "stocks-etl",
@@ -24,32 +27,17 @@ with DAG(
     # if it's exists check if the table exists or not using a branch operator again:
                 # if it's not exists create the table then che
                 # if it's exists  
-
-    get_dataset = BigQueryGetDatasetOperator(task_id="get-dataset", dataset_id=DATASET_NAME)
-    On_previous_faild_task = BashOperator(
-        task_id = "On_previous_faild_task",
-        bash_command="echo 'BigQueryGetDatasetOperator is Faild therefore this Task is running'",
-        trigger_rule='all_failed'
+    upload_stocks_data_to_gbq = PythonOperator(
+        task_id = "save_stocks_data_to_gbq",
+        python_callable=_save_stocks_data_to_gbq,
+        op_args=['AMZN',2022,1,1,2022,2,1,sa_path]
     )
-    On_previous_success_task = BashOperator(
-        task_id = "On_previous_success_task",
-        bash_command="echo 'BigQueryGetDatasetOperator is passed successfully!!'",
-    )
-    create_dataset = BigQueryCreateEmptyDatasetOperator(task_id="create_dataset", dataset_id=DATASET_NAME)
-    retry_get_dataset = BigQueryGetDatasetOperator(
-        task_id="retry-get-dataset",
-        dataset_id=DATASET_NAME,
-        trigger_rule='one_success'
-    )
-    get_dataset_result = BashOperator(
-        task_id="get_dataset_result",
-        bash_command="echo \"{{ task_instance.xcom_pull('get-dataset')['id'] }}\"",
-    )
-    get_retry_dataset_result = BashOperator(
-        task_id="get_retry_dataset_result",
-        bash_command="echo \"{{ task_instance.xcom_pull('retry-get-dataset')['id'] }}\"",
+    validate_stocks_data = GreatExpectationsOperator(
+        task_id="validate_stocks_data",
+        checkpoint_name="stocks_expectations",
+        data_context_root_dir=GE_ROOT_DIR,
+        fail_task_on_validation_failure=True,
+        return_json_dict=True
     )
     # Main Stream
-    get_dataset >> On_previous_faild_task >> create_dataset >> retry_get_dataset >> get_retry_dataset_result
-    get_dataset >> On_previous_success_task >> get_dataset_result
-    
+    upload_stocks_data_to_gbq >> validate_stocks_data
