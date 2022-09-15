@@ -10,11 +10,14 @@ from great_expectations_provider.operators.great_expectations import (
     GreatExpectationsOperator,
 )
 from packages.stock_data_access.stock_data import _save_stocks_data_to_gbq
+from pathlib import Path
 import os
 
 DATASET_NAME = 'stocks_storage'
-sa_path = os.environ.get('SERVICE_ACCOUNT_JSON_PATH')
-GE_ROOT_DIR = os.getcwd() + "/great_expectations"
+sa_path = os.environ.get('BQ_SERVICE_ACCOUNT_JSON')
+BASE_DIR = Path('.').parent.parent.parent.absolute()
+GE_ROOT_DIR = Path(BASE_DIR, "great_expectations")
+DBT_ROOT_DIR = Path(BASE_DIR, "dbt_transformations")
 
 with DAG(
     "stocks-etl",
@@ -22,22 +25,27 @@ with DAG(
     schedule_interval="@once",
     catchup=False
     ) as dag:
-    # TODO: Check the exsistance of the dataset using get_dataset operator and branch operator
-    # If it's not exists create a new dataset with an operator
-    # if it's exists check if the table exists or not using a branch operator again:
-                # if it's not exists create the table then che
-                # if it's exists  
+
     upload_stocks_data_to_gbq = PythonOperator(
         task_id = "save_stocks_data_to_gbq",
         python_callable=_save_stocks_data_to_gbq,
         op_args=['AMZN',2022,1,1,2022,2,1,sa_path]
     )
-    validate_stocks_data = GreatExpectationsOperator(
-        task_id="validate_stocks_data",
-        checkpoint_name="stocks_expectations",
-        data_context_root_dir=GE_ROOT_DIR,
-        fail_task_on_validation_failure=True,
-        return_json_dict=True
-    )
+    # validate_source_stocks_data = GreatExpectationsOperator(
+    #     task_id="validate_source_stocks_data",
+    #     checkpoint_name="stocks_expectations",
+    #     data_context_root_dir=GE_ROOT_DIR,
+    #     fail_task_on_validation_failure=True,
+    #     return_json_dict=True
+    # )
+    # run_dbt_dag = BashOperator(
+    #     task_id="run_dbt_dag",
+    #     bash_command=f'cd {DBT_ROOT_DIR} && dbt run'
+    # )
+    # test_dbt_dag = BashOperator(
+    #     task_id="test_dbt_dag",
+    #     bash_command=f'cd {DBT_ROOT_DIR} && dbt test'
+    # )
     # Main Stream
-    upload_stocks_data_to_gbq >> validate_stocks_data
+    # upload_stocks_data_to_gbq
+    # >> validate_source_stocks_data >> run_dbt_dag >> test_dbt_dag

@@ -1,2 +1,4 @@
 .env
 stock-dataops
+required_env_vars.txt
+.vscode/

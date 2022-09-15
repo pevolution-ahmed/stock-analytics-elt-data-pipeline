@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: stocks_storage
+    freshness:
+      warn_after: {count: 13, period: hour}
+      error_after: {count: 24, period: hour}
+    loaded_at_field: Date
+    tables:
+      - name: stocks_data

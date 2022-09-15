@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: coefficient_of_variation
+    description: >
+        The metrics to measure the invesment risk of a particular stock
+    columns:
+      - name: date
+        description: ""
+
+      - name: country
+        description: We add a case when country is 'CS' for the tests to pass. CS is the country code for Czechoslovakia, which is split in Czechia (CZ) and Slovakia. We choose to associate CS data to Czechia rather than Slovakia since it contains more (recent) data.
+        tests:
+          - not_null
+          - dbt_utils.relationships_where:
+              to: ref('seed_country_codes')
+              field: two_letter_iso_code
+
+      - name: sales
+        description: ""
+
+      - name: refunds
+        description: ""
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - country
