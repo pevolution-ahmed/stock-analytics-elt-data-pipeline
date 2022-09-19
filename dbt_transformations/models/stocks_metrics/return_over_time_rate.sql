@@ -14,7 +14,8 @@ with prices as (
 ,daily_returns as (
     select
         Date,
-        (current_price  / cast(previous_price as float)) - 1 as daily_return
+        (current_price  / cast(previous_price as float64)) - 1 as daily_return,
+        first_value(Date) over(order by Date) as start_date,
     from
         prices
 )
@@ -23,6 +24,6 @@ select
     avg(daily_return) as total_return_over_time
 from
     daily_returns
-where
-    date(Date) <= start_date
-    and date(Date) >= current_date()
+
+group by
+    1
