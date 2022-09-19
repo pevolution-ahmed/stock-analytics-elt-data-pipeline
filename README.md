@@ -1,7 +1,7 @@
-# Stock Market Analytics ETL Workflow
+# Stock Market Analytics ELT Workflow
 
 ## Description
-A Data Pipeline for Automating the ETL workflow of the stock market data and then building a BI product on top of this data, whether it's a dashboard or a forecast predictive model.
+A Data Pipeline for Automating the ELT workflow of the stock market data and then building a BI product on top of this data, whether it's a dashboard or a forecast predictive model.
 
 **Data Stack**:
 <img src="https://seeklogo.com/images/D/dbt-logo-500AB0BAA7-seeklogo.com.png" alt="drawing" width="50"/>
