@@ -4,7 +4,7 @@
 A Data Pipeline for Automating the ETL workflow of the stock market data and then building a BI product on top of this data, whether it's a dashboard or a forecast predictive model.
 
 **Data Stack**:
-<img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Data_build_tool_%28dbt%29_logo.svg/1200px-Data_build_tool_%28dbt%29_logo.svg.png" alt="drawing" width="100"/>
+<img src="https://seeklogo.com/images/D/dbt-logo-500AB0BAA7-seeklogo.com.png" alt="drawing" width="50"/>
 <img src="https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2" alt="drawing" width="50"/>
 <img src="https://greatexpectations.io/static/protag-f9bde762a58323b62e2c19c514c74ba8.png" alt="drawing" width="50"/>
 <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/google_bigquery_logo_icon_168150.png" alt="drawing" width="50"/>
