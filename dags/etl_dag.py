@@ -46,6 +46,5 @@ with DAG(
         task_id="test_dbt_dag",
         bash_command=f'cd {DBT_ROOT_DIR} && dbt test'
     )
-    Main Stream
-    upload_stocks_data_to_gbq
-    >> validate_source_stocks_data >> run_dbt_dag >> test_dbt_dag
+    # Main Stream
+    upload_stocks_data_to_gbq >> validate_source_stocks_data >> run_dbt_dag >> test_dbt_dag
