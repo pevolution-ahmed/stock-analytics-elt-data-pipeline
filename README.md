@@ -18,14 +18,14 @@ A Data Pipeline for Automating the ELT workflow of the stock market data and the
     - BI
 
 ## TO-DO
-- Save stocks tickers data from Yahoo Finance to Google BigQuery
-- Create a Great Expectation Suite and Checkpoints using the Great Expectation package to validate and test the loaded data (Validation)
-- Automate styling and formatting by adding the following tasks (quality gates):
+- [X] Save stocks tickers data from Yahoo Finance to Google BigQuery
+- [X] Create a Great Expectation Suite and Checkpoints using the Great Expectation package to validate and test the loaded data (Validation)
+- [X] Setup A dbt-core project as a transformation layer above the source data
+- [ ] Automate styling and formatting by adding the following tasks (quality gates):
     - a task for formatting python code using black lib
     - a task to check the linting using pylint, yamllint, sqlfluff
     - a task to run unit tests using pytest, pytest-cov
-- Setup A dbt-core project as a transformation layer above the source data
-- Build the stocks transformations with dbt (Transformation)
-- Add dbt tests (+freshness to the source) to all transformations
-- Add python unit testing to test core python scripts functionality
-- Create a dashboard to share those transformations (BI)
+- [ ] Build the stocks transformations with dbt (Transformation)
+- [ ] Add dbt tests (+freshness to the source) to all transformations
+- [ ] Add python unit testing to test core python scripts functionality
+- [ ] Create a dashboard to share those transformations (BI)
