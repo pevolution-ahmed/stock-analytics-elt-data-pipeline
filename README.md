@@ -6,7 +6,7 @@ A Data Pipeline for Automating the ELT workflow of the stock market data and the
 **Data Stack**:
 <img src="https://seeklogo.com/images/D/dbt-logo-500AB0BAA7-seeklogo.com.png" alt="drawing" width="50"/>
 <img src="https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2" alt="drawing" width="50"/>
-<img src="https://greatexpectations.io/static/protag-f9bde762a58323b62e2c19c514c74ba8.png" alt="drawing" width="50"/>
+<img src="https://fullstackchronicles.io/assets/images/great-expectations-f9bde762a58323b62e2c19c514c74ba8.png" alt="drawing" width="50"/>
 <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/google_bigquery_logo_icon_168150.png" alt="drawing" width="50"/>
 
 
