@@ -11,7 +11,7 @@ A Data Pipeline for Automating the ELT workflow of the stock market data and the
 
 
 ## General Pipeline Structure
-- The pipeline consists of four layers data should go through:
+- The pipeline consists of four layers that data should go through:
     - Extraction and Load
     - Validation and quality gates
     - Transformation
